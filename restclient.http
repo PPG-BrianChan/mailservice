@@ -1,0 +1,20 @@
+### ------------------------------------------------------------------------
+# Get service metadata
+GET http://localhost:4004/mailservice-services/$metadata
+
+### ------------------------------------------------------------------------
+# Get entity
+GET http://localhost:4004/mailservice-services/mailrequests
+
+### ------------------------------------------------------------------------
+# Create entity
+POST http://localhost:4004/mailservice-services/mailrequests
+Content-Type: application/json
+
+{
+    "sender" : "SAPCOEBTPGeneral@ppg.com",
+    "recipient" : "cchan@ppg.com",
+    "subject" : "Test POST",
+    "body" : "This is test mail from http client",
+    "status" : "C"
+}
