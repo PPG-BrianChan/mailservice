@@ -1,6 +1,6 @@
 using mailservice_services as ms from './mailservice';
 
-annotate ms.mailrequests with @odata.draft.enabled : true;
+// annotate ms.mailrequests with @odata.draft.enabled : true;
 
 annotate ms.mailrequests with {
     ID         @title : '{i18n>ID}'

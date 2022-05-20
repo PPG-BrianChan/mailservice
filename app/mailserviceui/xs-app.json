@@ -1,0 +1,36 @@
+{
+    "welcomeFile": "/index.html",
+    "authenticationMethod": "route",
+    "routes": [
+        {
+            "source": "^/mailservice-services/(.*)$",
+            "target": "/mailservice-services/$1",
+            "destination": "srvurl",
+            "authenticationType": "xsuaa"
+        },
+        {
+            "source": "^/mailservice-services",
+            "target": "/mailservice-services",
+            "destination": "srvurl",
+            "authenticationType": "xsuaa"
+        },
+        {
+            "source": "^/resources/(.*)$",
+            "target": "/resources/$1",
+            "authenticationType": "none",
+            "destination": "ui5"
+        },
+        {
+            "source": "^/test-resources/(.*)$",
+            "target": "/test-resources/$1",
+            "authenticationType": "none",
+            "destination": "ui5"
+        },
+        {
+            "source": "^(.*)$",
+            "target": "$1",
+            "service": "html5-apps-repo-rt",
+            "authenticationType": "xsuaa"
+        }
+    ]
+}

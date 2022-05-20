@@ -3,18 +3,6 @@ const sendmail = require('./libs/sendmail.js');
 
 module.exports = (srv) => {
 
-    // srv.before(['POST'], 'mailrequests', async (req) => {
-    //     console.log(`before create`);
-    //     const { mailrequests } = srv.entities;
-    //     const query_get_reqno = SELECT.one
-    //         .from(mailrequests)
-    //         .columns("max(req_no) as req_no");
-    //     const result = await cds.run(query_get_reqno);
-    //     const jsonobj = JSON.parse(JSON.stringify(result));
-    //     var req_no = `${jsonobj.req_no} + 1`;
-    //     req.data.req_no = JSON.stringify(eval(req_no));
-    // })
-
     srv.on('sendmail', async (req) => {
         const { mailrequests } = srv.entities;
         const id = req.params[0].ID;
@@ -25,5 +13,30 @@ module.exports = (srv) => {
         const result = await cds.run(query_get_req_details);
 
         sendmail(result);
+    })
+
+    srv.on('myaction', async (req) => {
+        console.log("HAHAHAHAHA");
+    })
+
+
+    srv.after(['CREATE'], 'mailrequests', async (result) => {
+        const { mailrequests } = srv.entities;
+        try {
+            await sendmail(result);
+        }
+        catch (error) {
+            console.log("Error in sending mail:", error.message)
+            const query_update_status = UPDATE(mailrequests)
+                .set`status = 'O'`
+                .where`ID = ${result.ID}`;
+            await cds.run(query_update_status);
+            return;
+        }
+        const query_update_status = UPDATE(mailrequests)
+            .set`status = 'C'`
+            .where`ID = ${result.ID}`;
+        await cds.run(query_update_status);
+        console.log("Mail request status updated successfully");
     })
 }

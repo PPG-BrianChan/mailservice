@@ -16,5 +16,31 @@ Content-Type: application/json
     "recipient" : "cchan@ppg.com",
     "subject" : "Test POST",
     "body" : "This is test mail from http client",
+    "status" : "O"
+}
+
+### ------------------------------------------------------------------------
+# Create entity bypassing draft -- not working for nodejs
+PUT http://localhost:4004/mailservice-services/mailrequests(ID=09d1fdc8-aa5b-460b-a3d2-b520023e76fe,IsActiveEntity=true)
+Content-Type: application/json
+
+{
+    "sender" : "SAPCOEBTPGeneral@ppg.com",
+    "recipient" : "cchan@ppg.com",
+    "subject" : "Test POST",
+    "body" : "This is test mail from http client bypass",
+    "status" : "C"
+}
+
+### ------------------------------------------------------------------------
+# event
+POST http://localhost:4004/mailservice-services/myaction
+Content-Type: application/json
+
+{
+    "sender" : "SAPCOEBTPGeneral@ppg.com",
+    "recipient" : "cchan@ppg.com",
+    "subject" : "Test POST",
+    "body" : "This is test mail from http client",
     "status" : "C"
 }

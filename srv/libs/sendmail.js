@@ -29,24 +29,26 @@ module.exports = async function (result) {
                 contentBytes: 'MTIz'
             }
         ],
-        saveToSentItems: 'true'
+        saveToSentItems: 'false'
     };
 
     try {
-    console.log("Preparing to send mail");
-    const service = await cdsapi.connect.to("Microsoft_Graph_Mail_API");
-    return await service.run({
-        // url: "/v1.0/me/sendmail",
-        url: `/v1.0/users/${result.sender}/sendmail`,
-        method: "post",
-        headers: {
-            'content-type': 'application/json'
-        },
-        data: mailcontent,
-    })
+        console.log("Preparing to send mail");
+        const service = await cdsapi.connect.to("Microsoft_Graph_Mail_API");
+        await service.run({
+            // url: "/v1.0/me/sendmail",
+            url: `/v1.0/users/${result.sender}/sendmail`,
+            method: "post",
+            headers: {
+                'content-type': 'application/json'
+            },
+            data: mailcontent,
+        })
+        console.log("Mail sent successfully");
+        return;
     }
 
     catch (error) {
-        console.log("Error in sending mail:",error.message)
+        throw new Error(error.message);
     }
 }
