@@ -1,7 +1,6 @@
 using mailservice as ms from '../db/data-model';
 
 service mailservice_services {
-    // @requires: 'authenticated-user'
     @requires: 'system-user'
     @Capabilities.Insertable : true
     entity mailrequests as projection on ms.mailrequests
@@ -15,12 +14,6 @@ service mailservice_services {
         action sendmail();
     }
 
-    action myaction(
-        sender    : String,
-        recipient : String,
-        subject   : String,
-        body      : String,
-        status    : String(1)
-    ) returns Integer;
+    entity attachments as projection on ms.Attachments
 
 }

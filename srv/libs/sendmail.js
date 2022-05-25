@@ -1,6 +1,7 @@
 const cdsapi = require('@sapmentors/cds-scp-api');
 
 module.exports = async function (result) {
+    console.log("Preparing mail content");
     const mailcontent = {
         message: {
             subject: result.subject,
@@ -21,16 +22,25 @@ module.exports = async function (result) {
                 }
             }
         },
-        attachments: [
-            {
-                '@odata.type': '#microsoft.graph.fileAttachment',
-                name: 'attachment.txt',
-                contentType: 'text/plain',
-                contentBytes: 'MTIz'
-            }
-        ],
         saveToSentItems: 'false'
     };
+
+    //Add attachment
+    console.log("Adding attachments");
+    if(result.attachments){
+        var objlist = [];
+        const attachmententries = result.attachments.entries();
+
+        for (let i of attachmententries) {
+            objlist.push({
+                '@odata.type': "#microsoft.graph.fileAttachment",
+                name: i[1].name,
+                contentType: i[1].contentType,
+                contentBytes: i[1].contentBytes
+            });
+        }
+        Object.assign(mailcontent.message, { attachments: objlist });
+    }
 
     try {
         console.log("Preparing to send mail");
